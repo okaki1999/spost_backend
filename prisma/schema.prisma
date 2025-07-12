@@ -14,11 +14,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id         String   @id @default(uuid())
+  firebaseUid String  @unique // FirebaseのUID
+  email      String
+  name       String?
+  avatar     String?  // アバター画像のURL
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  posts      Post[]   // 投稿との関連
+
+  @@map("users")
+}
+
 model Post {
   id        String   @id @default(uuid())
   title     String
   body      String
+  imageUrl  String?  // 投稿画像のURL
   userId    String
+  user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   location  Unsupported("geometry(Point,4326)") // PostGIS対応
 
