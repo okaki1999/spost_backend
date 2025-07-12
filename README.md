@@ -1,99 +1,214 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🚀 Spost Backend - NestJS API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+SpostアプリケーションのバックエンドAPIサーバーです。位置情報ベースのSNS機能を提供します。
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🛠️ 技術スタック
 
-## Description
+- **NestJS** - Node.jsフレームワーク
+- **Prisma ORM** - データベースORM
+- **PostgreSQL + PostGIS** - 地理空間データベース
+- **Firebase Admin SDK** - トークン検証
+- **Supabase** - データベースホスティング
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 📋 機能
 
-## Project setup
+### 認証
+- Firebase IDトークン検証
+- ユーザー認証ガード
+- セキュアなAPIエンドポイント
 
+### 投稿管理
+- 位置情報付き投稿作成
+- 近くの投稿取得（100m以内）
+- PostGISによる地理空間クエリ
+- 投稿一覧表示
+
+## 🚀 セットアップ
+
+### 前提条件
+- Node.js 18+
+- PostgreSQL（Supabase推奨）
+- Firebase プロジェクト
+
+### 1. 依存関係のインストール
 ```bash
-$ npm install
+npm install
 ```
 
-## Compile and run the project
-
+### 2. 環境変数の設定
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+cp .env.example .env
 ```
 
-## Run tests
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+`.env`ファイルを編集：
+```env
+DATABASE_URL="postgresql://username:password@host:port/database"
+FIREBASE_PROJECT_ID="your-firebase-project-id"
+FIREBASE_PRIVATE_KEY="your-firebase-private-key"
+FIREBASE_CLIENT_EMAIL="your-firebase-client-email"
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
+### 3. データベース設定
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+# データベースマイグレーション
+npx prisma migrate dev
+
+# Prismaクライアント生成
+npx prisma generate
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 4. 開発サーバー起動
+```bash
+# 開発モード（ホットリロード）
+npm run start:dev
 
-## Resources
+# 本番モード
+npm run start:prod
 
-Check out a few resources that may come in handy when working with NestJS:
+# デバッグモード
+npm run start:debug
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+## 📁 プロジェクト構造
 
-## Support
+```
+src/
+├── auth/                 # 認証関連
+│   ├── auth.guard.ts    # Firebase認証ガード
+│   └── auth.decorator.ts # ユーザー情報デコレータ
+├── posts/               # 投稿API
+│   ├── posts.controller.ts # 投稿コントローラー
+│   └── posts.service.ts    # 投稿サービス
+├── firebase/            # Firebase設定
+│   └── firebase.config.ts # Firebase Admin SDK設定
+├── prisma/              # Prisma設定
+│   └── prisma.service.ts # Prismaサービス
+├── app.controller.ts    # メインコントローラー
+├── app.service.ts       # メインサービス
+├── app.module.ts        # アプリケーションモジュール
+└── main.ts             # エントリーポイント
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## 🔧 開発
 
-## Stay in touch
+### 利用可能なスクリプト
+```bash
+npm run build          # ビルド
+npm run start          # 起動
+npm run start:dev      # 開発モード（ホットリロード）
+npm run start:debug    # デバッグモード
+npm run start:prod     # 本番モード
+npm run lint           # ESLint実行
+npm run test           # ユニットテスト
+npm run test:e2e       # E2Eテスト
+npm run test:cov       # テストカバレッジ
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### データベース管理
+```bash
+npx prisma studio      # Prisma Studio起動
+npx prisma migrate dev # マイグレーション
+npx prisma generate    # クライアント生成
+npx prisma db push     # スキーマプッシュ
+```
 
-## License
+## 📊 API仕様
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
-# spost_backend
+### エンドポイント
+
+#### 投稿関連
+- `GET /posts` - 近くの投稿取得
+  - Query Parameters:
+    - `lat`: 緯度
+    - `lng`: 経度
+  - Response: 100m以内の投稿一覧
+
+- `POST /posts` - 新規投稿作成
+  - Headers: `Authorization: Bearer <firebase-token>`
+  - Body:
+    ```json
+    {
+      "title": "投稿タイトル",
+      "body": "投稿内容",
+      "latitude": 35.6762,
+      "longitude": 139.6503
+    }
+    ```
+
+### 認証
+- Firebase IDトークンを`Authorization: Bearer <token>`ヘッダーで送信
+- 認証が必要なエンドポイントは自動的にトークンを検証
+
+## 🌍 地理空間機能
+
+### PostGIS統合
+- 位置情報をPostGISの`geometry(Point,4326)`型で保存
+- `ST_DWithin`関数による距離計算
+- 現在は100m以内の投稿を取得
+
+### 位置情報クエリ例
+```sql
+SELECT * FROM posts
+WHERE ST_DWithin(
+  location::geography,
+  ST_MakePoint(longitude, latitude)::geography,
+  100
+)
+ORDER BY "createdAt" DESC;
+```
+
+## 🚀 デプロイ
+
+### Render（推奨）
+1. Renderで新しいWeb Serviceを作成
+2. GitHubリポジトリを接続
+3. 環境変数を設定
+4. ビルドコマンド: `npm install && npm run build`
+5. 起動コマンド: `npm run start:prod`
+
+### Railway
+1. Railwayで新しいプロジェクトを作成
+2. GitHubリポジトリを接続
+3. 環境変数を設定
+4. 自動デプロイ
+
+## 🔒 セキュリティ
+
+### CORS設定
+```typescript
+app.enableCors({
+  origin: ['http://localhost:3000', 'https://your-frontend-domain.com'],
+  credentials: true,
+});
+```
+
+### Firebase認証
+- Firebase Admin SDKによるトークン検証
+- 無効なトークンは自動的に拒否
+- ユーザー情報をリクエストに追加
+
+## 🐛 トラブルシューティング
+
+### よくある問題
+
+**Prismaマイグレーションエラー**
+```bash
+# PostGIS拡張が有効になっているか確認
+npx prisma db push
+```
+
+**Firebase認証エラー**
+- Firebase設定が正しいか確認
+- サービスアカウントキーの形式を確認
+- 環境変数の設定を確認
+
+**CORSエラー**
+- フロントエンドのドメインがCORS設定に含まれているか確認
+
+## 📞 サポート
+
+問題が発生した場合は、GitHubのIssuesで報告してください。
+
+## 📄 ライセンス
+
+このプロジェクトはMITライセンスの下で公開されています。
