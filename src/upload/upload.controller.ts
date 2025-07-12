@@ -19,7 +19,7 @@ export class UploadController {
         fileSize: 5 * 1024 * 1024, // 5MB制限
       },
       fileFilter: (req, file, cb) => {
-                // 許可する画像MIMEタイプ
+        // 許可する画像MIMEタイプ
         const allowedMimeTypes = [
           'image/jpeg',
           'image/jpg',
