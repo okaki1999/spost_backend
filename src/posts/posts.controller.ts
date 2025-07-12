@@ -12,7 +12,13 @@ export class PostsController {
   @UseGuards(AuthGuard)
   async createPost(
     @Body()
-    body: { title: string; body: string; latitude: number; longitude: number },
+    body: {
+      title: string;
+      body: string;
+      latitude: number;
+      longitude: number;
+      imageUrl?: string;
+    },
     @CurrentUser() user: { uid: string; email: string },
   ) {
     return this.postsService.createPost({
@@ -21,6 +27,7 @@ export class PostsController {
       userId: user.uid,
       latitude: body.latitude,
       longitude: body.longitude,
+      imageUrl: body.imageUrl,
     });
   }
 

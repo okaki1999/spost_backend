@@ -6,6 +6,10 @@ export class PrismaService
   extends PrismaClient
   implements OnModuleInit, OnModuleDestroy
 {
+  constructor() {
+    super();
+  }
+
   async onModuleInit() {
     await this.$connect();
   }
@@ -14,3 +18,6 @@ export class PrismaService
     await this.$disconnect();
   }
 }
+
+// 型エイリアスを追加してPrismaServiceをPrismaClientとして扱う
+export type PrismaServiceType = PrismaService & PrismaClient;

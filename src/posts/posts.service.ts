@@ -12,14 +12,27 @@ export class PostsService {
     userId: string;
     latitude: number;
     longitude: number;
+    imageUrl?: string;
   }) {
+    // まずユーザーを取得または作成
+    const user = await (this.prisma as any).user.upsert({
+      where: { firebaseUid: data.userId },
+      update: {},
+      create: {
+        firebaseUid: data.userId,
+        email: `${data.userId}@example.com`, // 仮のメールアドレス
+        name: `User ${data.userId.substring(0, 8)}`,
+      },
+    });
+
     return this.prisma.$executeRaw`
-      INSERT INTO posts (id, title, body, "userId", "createdAt", location)
+      INSERT INTO posts (id, title, body, "imageUrl", "userId", "createdAt", location)
       VALUES (
         gen_random_uuid(),
         ${data.title},
         ${data.body},
-        ${data.userId},
+        ${data.imageUrl || null},
+        ${user.id},
         NOW(),
         ST_SetSRID(ST_MakePoint(${data.longitude}, ${data.latitude}), 4326)
       )
@@ -30,19 +43,24 @@ export class PostsService {
   async getNearbyPosts(latitude: number, longitude: number) {
     return this.prisma.$queryRaw`
       SELECT
-        id,
-        title,
-        body,
-        "userId",
-        "createdAt",
-        ST_AsText(location) as location
-      FROM posts
+        p.id,
+        p.title,
+        p.body,
+        p."imageUrl",
+        p."userId",
+        p."createdAt",
+        ST_AsText(p.location) as location,
+        u.name as "userName",
+        u.email as "userEmail",
+        u.avatar as "userAvatar"
+      FROM posts p
+      LEFT JOIN users u ON p."userId" = u.id
       WHERE ST_DWithin(
-        location::geography,
+        p.location::geography,
         ST_MakePoint(${longitude}, ${latitude})::geography,
         100
       )
-      ORDER BY "createdAt" DESC
+      ORDER BY p."createdAt" DESC
     `;
   }
 }

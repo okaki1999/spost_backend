@@ -11,7 +11,9 @@ export default tseslint.config(
       'dist/**/*',
       'generated/**/*',
       'node_modules/**/*',
-      'get-token.js'
+      'get-token.js',
+      'migrate-data.js',
+      'create-test-data.js'
     ],
   },
   eslint.configs.recommended,
