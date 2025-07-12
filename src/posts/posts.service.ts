@@ -26,7 +26,7 @@ export class PostsService {
     `;
   }
 
-  // 指定位置の半径10m以内の投稿を取得
+  // 指定位置の半径100m以内の投稿を取得
   async getNearbyPosts(latitude: number, longitude: number) {
     return this.prisma.$queryRaw`
       SELECT
@@ -40,7 +40,7 @@ export class PostsService {
       WHERE ST_DWithin(
         location::geography,
         ST_MakePoint(${longitude}, ${latitude})::geography,
-        10
+        100
       )
       ORDER BY "createdAt" DESC
     `;
